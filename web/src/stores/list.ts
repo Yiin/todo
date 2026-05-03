@@ -40,18 +40,6 @@ export const useListStore = defineStore('list', () => {
     if (!list.value) return null
     const listId = list.value.id
     const { id } = await api.addCategory(listId)
-    if (list.value && list.value.id === listId) {
-      const maxPos = list.value.categories.reduce(
-        (m, c) => Math.max(m, c.position),
-        -1,
-      )
-      list.value.categories.push({
-        id,
-        name: '',
-        position: maxPos + 1,
-        tasks: [],
-      })
-    }
     return id
   }
 
@@ -73,16 +61,6 @@ export const useListStore = defineStore('list', () => {
     if (!list.value) return null
     const listId = list.value.id
     const { id } = await api.addTask(listId, catId)
-    const cat = findCategory(catId)
-    if (cat) {
-      const maxPos = cat.tasks.reduce((m, t) => Math.max(m, t.position), -1)
-      cat.tasks.push({
-        id,
-        text: '',
-        completed: false,
-        position: maxPos + 1,
-      })
-    }
     return id
   }
 

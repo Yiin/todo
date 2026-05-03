@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, toRef } from 'vue'
+import { computed, onMounted, ref, toRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useListStore } from '@/stores/list'
 import { useListSocket } from '@/composables/useListSocket'
 import Category from '@/components/Category.vue'
 import ShareUrl from '@/components/ShareUrl.vue'
+import { recordRecent, removeRecent } from '@/lib/recent'
+import type { ListData } from '@/types'
 
 const props = defineProps<{ listId: string }>()
 
@@ -17,6 +19,55 @@ const listIdRef = toRef(props, 'listId')
 useListSocket(listIdRef, (next) => {
   store.setList(next)
 })
+
+function computeTitle(data: ListData): string | null {
+  for (const cat of data.categories) {
+    const trimmed = cat.name.trim()
+    if (trimmed) return trimmed
+  }
+  for (const cat of data.categories) {
+    for (const task of cat.tasks) {
+      const trimmed = task.text.trim()
+      if (trimmed) return trimmed
+    }
+  }
+  return null
+}
+
+let recentTimer: ReturnType<typeof setTimeout> | null = null
+let pendingRecent: { id: string; title: string | null } | null = null
+
+function scheduleRecent(id: string, title: string | null) {
+  pendingRecent = { id, title }
+  if (recentTimer) return
+  recentTimer = setTimeout(() => {
+    recentTimer = null
+    if (!pendingRecent) return
+    const { id: pid, title: ptitle } = pendingRecent
+    pendingRecent = null
+    if (ptitle === null) {
+      removeRecent(pid)
+    } else {
+      recordRecent(pid, ptitle)
+    }
+  }, 1000)
+}
+
+watch(
+  list,
+  (next) => {
+    if (!next) return
+    const title = computeTitle(next)
+    scheduleRecent(next.id, title)
+  },
+  { deep: true },
+)
+
+const isMac = computed(() => {
+  if (typeof navigator === 'undefined') return false
+  return /Mac/i.test(navigator.platform)
+})
+const modKey = computed(() => (isMac.value ? '⌘' : 'ctrl'))
 
 onMounted(async () => {
   try {
@@ -66,6 +117,25 @@ onMounted(async () => {
       >
         + add category
       </button>
+
+      <dl class="keybind-legend mt-24">
+        <div class="keybind-row">
+          <kbd class="keybind">enter</kbd>
+          <span class="keybind-label">new task</span>
+        </div>
+        <div class="keybind-row">
+          <kbd class="keybind">backspace</kbd>
+          <span class="keybind-label">delete empty task</span>
+        </div>
+        <div class="keybind-row">
+          <kbd class="keybind">tab</kbd>
+          <span class="keybind-label">next field</span>
+        </div>
+        <div class="keybind-row">
+          <kbd class="keybind">{{ modKey }}<span class="keybind-sep"> + </span>↵</kbd>
+          <span class="keybind-label">toggle complete</span>
+        </div>
+      </dl>
     </div>
   </div>
 </template>

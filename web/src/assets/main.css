@@ -231,3 +231,112 @@ select:focus {
 .cat-trash:hover {
   color: var(--accent);
 }
+
+.keybind-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.keybind-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.keybind {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 1px 1px;
+  min-width: 88px;
+}
+
+.keybind-sep {
+  letter-spacing: 0;
+  color: var(--ink-faint);
+}
+
+.keybind-label {
+  color: var(--ink-faint);
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recent-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: color 120ms ease;
+}
+
+.recent-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  transition: color 120ms ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.recent-row:hover .recent-title {
+  color: var(--accent);
+}
+
+.recent-time {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.new-list-btn {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink-soft);
+  padding: 4px 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.new-list-btn:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.clear-history-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  transition: color 120ms ease;
+}
+
+.clear-history-link:hover {
+  color: var(--accent);
+}
