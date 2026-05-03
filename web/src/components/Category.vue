@@ -3,6 +3,7 @@ import { nextTick, onBeforeUnmount, ref } from 'vue'
 import type { Category } from '@/types'
 import { useListStore } from '@/stores/list'
 import { useDebouncedField } from '@/composables/useDebouncedField'
+import { useAutoResize } from '@/composables/useAutoResize'
 import TaskRow from './TaskRow.vue'
 
 const props = defineProps<{
@@ -16,7 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const store = useListStore()
-const nameInputRef = ref<HTMLInputElement | null>(null)
+const nameInputRef = ref<HTMLTextAreaElement | null>(null)
 let taskRefs = new Map<string, InstanceType<typeof TaskRow>>()
 
 const { local: localName, hasPending, onInput: onFieldInput, flush } =
@@ -25,8 +26,11 @@ const { local: localName, hasPending, onInput: onFieldInput, flush } =
     (next) => store.renameCategory(props.category.id, next),
   )
 
+const { resize: resizeName } = useAutoResize(nameInputRef, () => localName.value)
+
 function onNameInput(e: Event) {
-  onFieldInput((e.target as HTMLInputElement).value)
+  onFieldInput((e.target as HTMLTextAreaElement).value)
+  resizeName()
 }
 
 function onNameBlur() {
@@ -115,11 +119,11 @@ onBeforeUnmount(() => {
     :style="{ animationDelay: `${Math.min(index, 6) * 90}ms` }"
   >
     <div class="cat-header flex items-baseline gap-3">
-      <input
+      <textarea
         ref="nameInputRef"
         class="cat-name"
         :value="localName"
-        type="text"
+        rows="1"
         placeholder="untitled"
         autocomplete="off"
         spellcheck="false"

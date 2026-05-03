@@ -94,8 +94,14 @@ select:focus {
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.5;
   transition: border-color 120ms ease;
+  display: block;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .todo-input::placeholder {
@@ -126,6 +132,12 @@ select:focus {
   line-height: 1.15;
   letter-spacing: -0.005em;
   transition: border-color 120ms ease;
+  display: block;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .cat-name::placeholder {

@@ -3,6 +3,7 @@ import { nextTick, onBeforeUnmount, ref } from 'vue'
 import type { Task } from '@/types'
 import { useListStore } from '@/stores/list'
 import { useDebouncedField } from '@/composables/useDebouncedField'
+import { useAutoResize } from '@/composables/useAutoResize'
 
 const props = defineProps<{
   task: Task
@@ -17,7 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const store = useListStore()
-const inputRef = ref<HTMLInputElement | null>(null)
+const inputRef = ref<HTMLTextAreaElement | null>(null)
 
 const { local: localText, hasPending, onInput: onFieldInput, flush } =
   useDebouncedField(
@@ -25,8 +26,11 @@ const { local: localText, hasPending, onInput: onFieldInput, flush } =
     (next) => store.updateTaskText(props.task.id, next),
   )
 
+const { resize } = useAutoResize(inputRef, () => localText.value)
+
 function onInput(e: Event) {
-  onFieldInput((e.target as HTMLInputElement).value)
+  onFieldInput((e.target as HTMLTextAreaElement).value)
+  resize()
 }
 
 function onBlur() {
@@ -115,12 +119,12 @@ defineExpose({
         />
       </svg>
     </button>
-    <input
+    <textarea
       ref="inputRef"
       class="todo-input"
       :class="{ 'todo-input--done': task.completed }"
       :value="localText"
-      type="text"
+      rows="1"
       placeholder=""
       autocomplete="off"
       spellcheck="false"
