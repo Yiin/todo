@@ -1,0 +1,8 @@
+{
+  "name": "todo",
+  "private": true,
+  "scripts": {
+    "dev:api": "cd api && bun run dev",
+    "dev:web": "cd web && bun run dev"
+  }
+}

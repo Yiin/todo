@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f5efe4;
+  --color-paper-deep: #ede5d3;
+  --color-ink: #1d1a17;
+  --color-ink-soft: #5a5347;
+  --color-ink-faint: #8a8170;
+  --color-accent: #b8472f;
+  --color-rule: #c8bfae;
+
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --paper: #f5efe4;
+  --paper-deep: #ede5d3;
+  --ink: #1d1a17;
+  --ink-soft: #5a5347;
+  --ink-faint: #8a8170;
+  --accent: #b8472f;
+  --rule: #c8bfae;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  background: var(--paper);
+  color: var(--ink);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.10 0 0 0 0 0.09 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+input:focus,
+textarea:focus,
+button:focus,
+select:focus {
+  outline: none;
+}
+
+.todo-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 4px 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  transition: border-color 120ms ease;
+}
+
+.todo-input::placeholder {
+  color: var(--ink-faint);
+  font-style: normal;
+}
+
+.todo-input:focus {
+  border-bottom-color: var(--rule);
+}
+
+.todo-input--done {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ink-faint);
+}
+
+.cat-name {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 6px 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  transition: border-color 120ms ease;
+}
+
+.cat-name::placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.cat-name:focus {
+  border-bottom-color: var(--rule);
+}
+
+.cat-rule {
+  height: 1px;
+  background: var(--rule);
+  margin-top: 4px;
+}
+
+.add-link {
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 120ms ease;
+  text-align: left;
+}
+
+.add-link:hover {
+  color: var(--ink);
+}
+
+.checkbox-btn {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.checkbox-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.cat-enter {
+  opacity: 0;
+  transform: translateY(4px);
+  animation: catFadeIn 360ms ease forwards;
+}
+
+@keyframes catFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+  transition: color 120ms ease;
+}
+
+.share-link:hover {
+  color: var(--ink);
+}
+
+.share-status {
+  color: var(--accent);
+}
+
+.cat-trash {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease;
+}
+
+.cat-header:hover .cat-trash {
+  opacity: 1;
+}
+
+.cat-trash:hover {
+  color: var(--accent);
+}
